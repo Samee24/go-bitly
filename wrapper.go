@@ -4,15 +4,37 @@ import (
 "fmt"
 "net/http"
 "io/ioutil"
-//"encoding/json"
+"net/url"
+"encoding/json"
 )
 
+const (
+  baseApiURI   = "https://api-ssl.bitly.com"
+  shortenEndPoint = "/v3/shorten"
+)
+
+type ShortenResponse struct {
+    Status  string `json:"status_txt"`
+    ShortenResponseData `json:"data"`
+}
+
+type ShortenResponseData struct {
+    ShortUrl  string `json:"url"`
+}
+
 func main() {
-    resp, err := http.Get("https://api-ssl.bitly.com/v3/shorten?access_token=ACCESSTOKEN&longUrl=http%3A%2F%2Fgoogle.com%2F")
+    accessToken := "ee3b33ba448f179ac37bdf4bfb888fa032f78d18"
+    longUrl := url.QueryEscape("http://samee.ninja")
+
+    var pojo ShortenResponse
+    resp, err := http.Get(baseApiURI + shortenEndPoint + "?access_token=" + accessToken + "&longUrl=" + longUrl)
     if err != nil {
       fmt.Println("Error occurred")
     }
     defer resp.Body.Close()
     body, err := ioutil.ReadAll(resp.Body)
     fmt.Println(string(body))
+
+    json.Unmarshal([]byte(string(body)), &pojo)
+    fmt.Println(pojo.ShortenResponseData.ShortUrl)
 }
