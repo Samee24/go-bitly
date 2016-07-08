@@ -23,7 +23,7 @@ type ShortenResponseData struct {
 }
 
 func main() {
-    accessToken := "ee3b33ba448f179ac37bdf4bfb888fa032f78d18"
+    accessToken := ""
     longUrl := url.QueryEscape("http://samee.ninja")
 
     var pojo ShortenResponse
