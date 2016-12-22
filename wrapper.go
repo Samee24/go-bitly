@@ -6,6 +6,7 @@ import (
 "io/ioutil"
 "net/url"
 "encoding/json"
+"os"
 )
 
 const (
@@ -14,7 +15,7 @@ const (
 )
 // Instance to hold base-level response from the API
 type ShortenResponse struct {
-    Status  string `json:"status_txt"`
+    Status string `json:"status_txt"`
     // Nested field
     ShortenResponseData `json:"data"`
 }
@@ -26,8 +27,12 @@ type ShortenResponseData struct {
 
 func main() {
     accessToken := ""
+    if len(os.Args) < 2 {
+      fmt.Println("Please provide a url to shorten")
+      os.Exit(1)
+    }
     // Make sure we encode our URI
-    longUrl := url.QueryEscape("http://samee.ninja")
+    longUrl := url.QueryEscape(os.Args[1])
 
     resp, err := http.Get(baseApiURI + shortenEndPoint + "?access_token=" + accessToken + "&longUrl=" + longUrl)
     if err != nil {
@@ -35,15 +40,14 @@ func main() {
     }
     defer resp.Body.Close()
     body, err := ioutil.ReadAll(resp.Body)
-    // Print JSON response
-    fmt.Println(string(body))
 
-    var respWrapper ShortenResponse
-    err = json.Unmarshal([]byte(string(body)), &respWrapper)
+    // Parse JSON
+    var respWrapper = new(ShortenResponse)
+    err = json.Unmarshal([]byte(body), &respWrapper)
     if err != nil {
       fmt.Println("Error occurred")
     }
 
     // Print shortened link
-    fmt.Println(pojo.ShortenResponseData.ShortUrl)
+    fmt.Println(respWrapper.ShortenResponseData.ShortUrl)
 }
