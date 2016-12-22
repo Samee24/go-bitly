@@ -31,21 +31,25 @@ func main() {
       fmt.Println("Please provide a url to shorten")
       os.Exit(1)
     }
+
+    if len(accessToken) < 1 {
+      fmt.Println("Please enter an access token")
+      os.Exit(1)
+    }
     // Make sure we encode our URI
     longUrl := url.QueryEscape(os.Args[1])
 
     resp, err := http.Get(baseApiURI + shortenEndPoint + "?access_token=" + accessToken + "&longUrl=" + longUrl)
     if err != nil {
-      fmt.Println("Error occurred")
+      fmt.Printf("Error occurred\n %s", err)
     }
     defer resp.Body.Close()
     body, err := ioutil.ReadAll(resp.Body)
-
     // Parse JSON
     var respWrapper = new(ShortenResponse)
     err = json.Unmarshal([]byte(body), &respWrapper)
     if err != nil {
-      fmt.Println("Error occurred")
+      fmt.Printf("Error occurred: %s", respWrapper.Status)
     }
 
     // Print shortened link
