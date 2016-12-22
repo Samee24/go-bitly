@@ -11,7 +11,7 @@ import (
 )
 
 const (
-  accessToken="ee3b33ba448f179ac37bdf4bfb888fa032f78d18"
+  accessToken=""
   baseApiURI="https://api-ssl.bitly.com"
   shortenEndPoint="/v3/shorten"
   expandEndPoint="/v3/expand"
