@@ -10,12 +10,12 @@ accessToken := "[YOUR_KEY_GOES_HERE]"
 
 To shorten URLs, simply run the following command:
 ```
-go run bitylywrapper.go -s [YOUR URL]
+go run bitylyWrapper.go -s [YOUR URL]
 ```
 
 #### expand
 
 To expand bit.ly URLs, simply run the following command:
 ```
-go run bitylywrapper.go -e [YOUR URL]
+go run bitylyWrapper.go -e [YOUR URL]
 ```
